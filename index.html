@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div id="pager"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="jquery.babypaunch.pagify.js"></script>
+	<script>
+		$("#pager")
+			.pagify({"current": 23, "total": 999})
+			.on("click", "a", function(){
+				alert($(this).attr("data-offset"));
+			})
+			.on("change", "select", function(){
+				alert($(this).val());
+			})
+		;
+	</script>
+</body>
+</html>
