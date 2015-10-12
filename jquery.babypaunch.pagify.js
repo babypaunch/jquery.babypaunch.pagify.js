@@ -58,16 +58,14 @@ $.fn.pagify = function(settings){
 					break;
 				}
 				return " style='" + _style + "'";
-			}
+			} //end: style: function(idx){
+
 			/* easy set buttons
             , first: function(num, text){ //'처음' 버튼
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ≪ </a>\n";
             }
             , prev: function(num, text){ //'이전' 버튼
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ＜ </a>\n";
-            }
-            , pager: function(num, text, isCurrent){ //'pager' 버튼 전체
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style(isCurrent ? 1 : 0) + ">" + text + "</a>\n";
             }
             , next: function(num, text){ //'다음' 버튼
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ＞ </a>\n";
@@ -76,6 +74,7 @@ $.fn.pagify = function(settings){
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ≫ </a>\n";
             }
 			*/
+
 			/* default set buttons */
 			, nav: function(type, num, text){
 				var _type = "";
@@ -94,7 +93,11 @@ $.fn.pagify = function(settings){
 					break;
 				}
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> " + _type + " </a>\n";
-			}
+			} //end: , nav: function(type, num, text){
+
+            , pager: function(num, text, isCurrent){ //'pager' 버튼 전체
+                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style(isCurrent ? 1 : 0) + ">" + text + "</a>\n";
+            }
         } //end: , ui: {
     } //end: var defaults = {
     
