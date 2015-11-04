@@ -10,8 +10,13 @@
 	<script>
 		$("#pager")
 			.pagify({"current": 23, "total": 999})
+			.on("change", "input", function(){
+				$(this).attr("data-index", Number($(this).val()) - 1);
+
+				alert($(this).attr("data-index") + ", " + $(this).val());
+			})
 			.on("click", "a", function(){
-				alert($(this).attr("data-offset"));
+				alert($(this).attr("data-index"));
 			})
 			.on("change", "select", function(){
 				alert($(this).val());

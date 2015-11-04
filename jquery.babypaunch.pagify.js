@@ -11,32 +11,34 @@ $.fn.pagify = function(settings){
         current: 1 //현재 페이지 번호(text)
         , total: 0 //전체 건수
         , pager: 10 //web에서는 보통 pager를 10개로 노출한다.
+		, pagerType: 0 //pager의 type을 결정, 0이면 숫자링크, 다른 값은 input으로 출력
         , combo: [10, 20, 30, 50] //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
         , list: 20 //한 화면에 listing될 갯수를 지정.
-        , showCombo: true//콤보박스의 선택에 대한 부분은 추후 개발 예정임.
-        , showFirstEnd: true//처음/끝 버튼을 보일지 여부.
-		, attr: "offset" //set custom attr name
+        , showCombo: true //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
+		, showPrevNext: true //이전/다음 버튼을 보일지 여부.
+        , showFirstEnd: true //처음/끝 버튼을 보일지 여부.
+		, attr: "index" //set custom attr name
         
         , first: function(min){ //'처음' 버튼
             return {[this.attr] : min - 1, "text": min};
-        }
+        } //end: , first: function(min){
         , prev: function(num, min){ //'이전' 버튼
             var _prev = (num - 1) * this.pager - this.pager + 1;
             return _prev < min ? {[this.attr]: min - 1, "text": min} : {[this.attr]: _prev - 1, "text": _prev};
-        }
+        } //end: , prev: function(num, min){
         , from: function(num){ //'pager 시작' 번호
             return num === 1 ? 1 : num * this.pager - this.pager + 1;
-        }
+        } //end: , from: function(num){
         , to: function(num){ //'pager 끝' 번호
             return num === 1 ? this.pager : num * this.pager;
-        }
+        } //end: , to: function(num){
         , next: function(num, max){ //'다음' 버튼
             var _next = num * this.pager + 1;
             return _next > max ? {[this.attr]: max - 1, "text": max} : {[this.attr]: _next - 1, "text": _next};
-        }
+        } //end: , next: function(num, max){
         , end: function(max){ //'끝' 버튼
             return {[this.attr]: max - 1, "text": max};
-        }
+        } //end: , end: function(max){
         
         /*
         * 커스터마이징을 하는 가장 중요한 부분일 수 있음.
@@ -45,7 +47,7 @@ $.fn.pagify = function(settings){
         */
         , ui: {
 			style: function(idx){
-				var _style = "text-decoration: none; font-size: 1.2em; pointer: cursor;";
+				var _style = "text-decoration: none; font-size: 1em; pointer: cursor;";
 				switch(idx){
 					case 0:
 						_style += " color: silver; padding: 0.3em;"
@@ -60,22 +62,10 @@ $.fn.pagify = function(settings){
 				return " style='" + _style + "'";
 			} //end: style: function(idx){
 
-			/* easy set buttons
-            , first: function(num, text){ //'처음' 버튼
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ≪ </a>\n";
-            }
-            , prev: function(num, text){ //'이전' 버튼
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ＜ </a>\n";
-            }
-            , next: function(num, text){ //'다음' 버튼
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ＞ </a>\n";
-            }
-            , end: function(num, text){ //'끝' 버튼
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> ≫ </a>\n";
-            }
+			/*
+			* default set buttons
+			* 아래 _type 부분을 편의에 따라 img, span, i 등의 tag로 수정해서 사용하면 됨.
 			*/
-
-			/* default set buttons */
 			, nav: function(type, num, text){
 				var _type = "";
 				switch(type){
@@ -95,9 +85,15 @@ $.fn.pagify = function(settings){
                 return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style() + "> " + _type + " </a>\n";
 			} //end: , nav: function(type, num, text){
 
-            , pager: function(num, text, isCurrent){ //'pager' 버튼 전체
-                return "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style(isCurrent ? 1 : 0) + ">" + text + "</a>\n";
-            }
+            , pager: function(num, text, isCurrent, type, listed){ //'pager' 버튼 전체
+				var result = "";
+				if(type === 0){ //일반 텍스트 타입
+					result = "<a href='#' data-" + defaults.attr + "='" + num + "'" + this.style(isCurrent ? 1 : 0) + ">" + text + "</a>\n";
+				}else{ //input 타입
+					result = "<input type='number' min='1' max='" + listed + "' data-" + defaults.attr + "='" + num + "' value='" + text + "' style='font-size: 1em; width: 60px; text-align: right;'/>\n";
+				}
+                return result;
+            } //end: , pager: function(num, text, isCurrent, type, listed){ //'pager' 버튼 전체
         } //end: , ui: {
     } //end: var defaults = {
     
@@ -128,11 +124,11 @@ $.fn.pagify = function(settings){
             if(defaults.showFirstEnd && paged > 1 && defaults.current !== 1){ //'처음' 버튼 추가 여부
                 result.first = defaults.first(1);
             }
-            if(defaults.current > defaults.pager){ //'이전' 버튼 추가 여부
+            if(defaults.showPrevNext && defaults.current > defaults.pager){ //'이전' 버튼 추가 여부
                 result.prev = defaults.prev(i, 1);
             }
             result.fromTo = fromTo; //미리 구한 'pager fromTo' 추가
-            if(defaults.next(i, listed).text < defaults.end(listed).text){ //'다음' 버튼 추가 여부
+            if(defaults.showPrevNext && defaults.next(i, listed).text < defaults.end(listed).text){ //'다음' 버튼 추가 여부
                 result.next = defaults.next(i, listed);
             }
             if(defaults.showFirstEnd && paged > 1 && defaults.current !== listed){ //'끝' 버튼 추가 여부
@@ -142,26 +138,31 @@ $.fn.pagify = function(settings){
     } //end: for(var i = 0; i <= paged; i++){
     
     return this.each(function(){
-        var tags = "";
+        var tags = ""; //최종적으로 그릴 tag
         var _ui = defaults.ui;
         
         /*
         * 동적으로 그릴 tag 작성
         * '처음, 끝' 버튼은 추후 작성 예정
         */
-        for(var i in result){
+        for(var i in result){ //계산된 json 객체
             var _result = result[i];
-            if(i === "fromTo"){
-                for(var j = 0; j < _result.length; j++){
-                    tags += _ui.pager(_result[j][defaults.attr], _result[j].text, _result[j].isCurrent);
-                }
+            if(i === "fromTo"){ //pager 부분에 해당하면
+				for(var j = 0; j < _result.length; j++){
+					if(defaults.pagerType === 0){ //pagerType이 일반 텍스트이면
+						tags += _ui.pager(_result[j][defaults.attr], _result[j].text, _result[j].isCurrent, 0);
+					}else{ //pagerType이 input이면
+						if(_result[j].isCurrent){ //current에 해당하는 값만 attr에 남기면 됨.
+							tags += _ui.pager(_result[j][defaults.attr], _result[j].text, _result[j].isCurrent, 1, listed);
+						}
+					}
+				}
             }else{
-                //tags += _ui[i](_result[defaults.attr], _result.text); //easy set buttons
                 tags += _ui.nav(i, _result[defaults.attr], _result.text); //default set buttons
 			}
         } //end: for(var i in result){
 
-		if(defaults.showCombo){
+		if(defaults.showCombo){ //select box의 처리
 			tags += "<select style='font-size: 1em;'>\n";
 			for(var i = 0, combo = defaults.combo; i < combo.length; i++){
 				tags += "\t<option value='" + combo[i] + "'" + (defaults.list === combo[i] ? " selected='selected'" : "") + ">"
