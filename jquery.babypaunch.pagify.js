@@ -1,9 +1,10 @@
 /*
 * jquery pager plugin
-* 만든이: 정대규
-* 일시: 2015.10.08
-* 버전: 0.1
-* lisence: MIT(공짜)
+* dev: 정대규(jeong dae gyu)
+* first: 2015.10.08
+* update: 2015.11.12
+* version: 0.2
+* lisence: MIT(free)
 */
 
 $.fn.pagify = function(settings){
@@ -11,7 +12,7 @@ $.fn.pagify = function(settings){
         current: 1 //현재 페이지 번호(text)
         , total: 0 //전체 건수
         , pager: 10 //web에서는 보통 pager를 10개로 노출한다.
-		, pagerType: 0 //pager의 type을 결정, 0이면 숫자링크, 다른 값은 input으로 출력
+		, textType: true //pager의 type을 결정, true이면 숫자링크, false면 input으로 출력
         , combo: [10, 20, 30, 50] //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
         , list: 20 //한 화면에 listing될 갯수를 지정.
         , showCombo: true //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
@@ -149,9 +150,9 @@ $.fn.pagify = function(settings){
             var _result = result[i];
             if(i === "fromTo"){ //pager 부분에 해당하면
 				for(var j = 0; j < _result.length; j++){
-					if(defaults.pagerType === 0){ //pagerType이 일반 텍스트이면
+					if(defaults.textType){ //pager의 type이 text이면
 						tags += _ui.pager(_result[j][defaults.attr], _result[j].text, _result[j].isCurrent, 0);
-					}else{ //pagerType이 input이면
+					}else{ //pager의 type이 text가 아니면 input
 						if(_result[j].isCurrent){ //current에 해당하는 값만 attr에 남기면 됨.
 							tags += _ui.pager(_result[j][defaults.attr], _result[j].text, _result[j].isCurrent, 1, listed);
 						}
