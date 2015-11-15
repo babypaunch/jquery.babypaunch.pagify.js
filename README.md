@@ -54,6 +54,12 @@
     <td>한 화면에 보여질 게시물의 건수를 지정. 웹이면 일반적으로 20개, 모바일이면 10개 정도로 지정하면 됨.</td>
   </tr>
   <tr>
+    <td>showTotal</td>
+    <td>boolean</td>
+    <td>false</td>
+    <td>전체건수를 보여줄지 지정</td>
+  </tr>
+  <tr>
     <td>showCombo</td>
     <td>boolean</td>
     <td>true</td>
