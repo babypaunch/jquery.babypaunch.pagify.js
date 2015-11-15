@@ -2,14 +2,71 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
+	<style>
+		a {text-decoration: none;}
+	</style>
 </head>
 <body>
-	<div id="pager"></div>
+	<div id="pager1"></div>
+	<br/>
+	<div id="pager2"></div>
+	<br/>
+	<div id="pager3"></div>
+	<br/>
+	<div id="pager4"></div>
+	<br/>
+	<div id="pager5"></div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="jquery.babypaunch.pagify.min.js"></script>
+	<script src="jquery.babypaunch.pagify.js"></script>
 	<script>
-		$("#pager")
+		$("#pager1")
 			.pagify({"current": 23, "total": 999})
+			.on("click", "a", function(){
+				alert($(this).attr("data-index"));
+			})
+			.on("change", "select", function(){
+				alert($(this).val());
+			})
+		;
+
+		$("#pager2")
+			.pagify({"current": 2, "total": 500, "pager": 5, "showCombo": false})
+			.on("click", "a", function(){
+				alert($(this).attr("data-index"));
+			})
+			.on("change", "select", function(){
+				alert($(this).val());
+			})
+		;
+
+		$("#pager3")
+			.pagify({"current": 23, "total": 999, "isText": false})
+			.on("change", "input", function(){
+				$(this).attr("data-index", Number($(this).val()) - 1);
+
+				alert($(this).attr("data-index") + ", " + $(this).val());
+			})
+			.on("click", "a", function(){
+				alert($(this).attr("data-index"));
+			})
+			.on("change", "select", function(){
+				alert($(this).val());
+			})
+		;
+
+		$("#pager4")
+			.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showTotal": true})
+			.on("click", "a", function(){
+				alert($(this).attr("data-index"));
+			})
+			.on("change", "select", function(){
+				alert($(this).val());
+			})
+		;
+
+		$("#pager5")
+			.pagify({"current": 23, "total": 999, "isText": false, "showTotal": true, "showCombo": false})
 			.on("change", "input", function(){
 				$(this).attr("data-index", Number($(this).val()) - 1);
 
