@@ -84,6 +84,12 @@
     <td>"index"</td>
     <td>동적으로 그려질 페이저에 커스텀속성으로 넣을 이름을 지정. default를 그대로 사용하는 경우 data-index라는 속성을 가지게되며, offset이 0인 페이지별 값을 가진다.</td>
   </tr>
+  <tr>
+    <td>classes</td>
+    <td>json</td>
+    <td>{first: "first", prev: "prev", current: "on", next: "next", end: "end"}</td>
+    <td>동적으로 그려질 페이저에 커스텀 클래스명을 지정할 수 있음.</td>
+  </tr>
 </table>
 </p>
 

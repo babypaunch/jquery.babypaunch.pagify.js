@@ -4,59 +4,145 @@
 	<meta charset="UTF-8">
 	<style>
 		a {text-decoration: none;}
+		div {border-bottom: 1px dotted silver; padding-bottom: 20px;}
 	</style>
 </head>
 <body>
+	<p>sample and codes are a pair.</p>
+
+<pre class="prettyprint">
+ex1)
+
+$("#pager1")
+	.pagify({"current": 23, "total": 999})
+	.on("click", "a", function(){
+		//sample process
+		$("#pager1").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "list": $("#pager1 option:selected").val()});
+	})
+	.on("change", "select", function(){
+		//sample process
+		$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
+	})
+	.find("a").css({"color": "silver"})
+	.end().find("a.on").css({"color": "red", "font-weight": "bold"})
+	.end().find("a.first, a.prev, a.next, a.end").css({"color": "black", "font-weight": "bold"})
+;
+</pre>
 	<div id="pager1"></div>
-	<br/>
+
+<pre class="prettyprint">
+ex2)
+
+$("#pager2")
+	.pagify({"current": 2, "total": 500, "pager": 5, "showCombo": false})
+	.on("click", "a", function(){
+		//sample process
+		alert($(this).attr("data-index"));
+	})
+;
+</pre>
 	<div id="pager2"></div>
-	<br/>
+
+<pre class="prettyprint">
+ex3)
+
+$("#pager3")
+	.pagify({"current": 23, "total": 999, "isText": false})
+	.on("change", "input", function(){
+		//alert($(this).attr("data-index") + ", " + $(this).val());
+		//sample process
+		$("#pager3").pagify({"current": Number($(this).val()), "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
+	})
+	.on("click", "a", function(){
+		//sample process
+		$("#pager3").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
+	})
+	.on("change", "select", function(){
+		//sample process
+		$("#pager3").pagify({"current": 1, "total": 999, "isText": false, "list": $(this).val()});
+	})
+;
+</pre>
 	<div id="pager3"></div>
-	<br/>
+
+<pre class="prettyprint">
+ex4)
+
+$("#pager4")
+	.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showListed": true})
+	.on("click", "a", function(){
+		alert($(this).attr("data-index"));
+	})
+	.on("change", "select", function(){
+		alert($(this).val());
+	})
+;
+</pre>
 	<div id="pager4"></div>
-	<br/>
+
+<pre class="prettyprint">
+ex5)
+
+$("#pager5")
+	.pagify({"current": 23, "total": 999, "isText": false, "showListed": true, "showCombo": false})
+	.on("change", "input", function(){
+		$(this).attr("data-index", Number($(this).val()) - 1);
+
+		alert($(this).attr("data-index") + ", " + $(this).val());
+	})
+	.on("click", "a", function(){
+		alert($(this).attr("data-index"));
+	})
+;
+</pre>
 	<div id="pager5"></div>
 
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="jquery.babypaunch.pagify.js"></script>
+	<script src="jquery.babypaunch.pagify.min.js"></script>
 	<script>
 		$("#pager1")
 			.pagify({"current": 23, "total": 999})
 			.on("click", "a", function(){
-				alert($(this).attr("data-index"));
+				//sample process
+				$("#pager1").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "list": $("#pager1 option:selected").val()});
 			})
 			.on("change", "select", function(){
-				alert($(this).val());
+				//sample process
+				$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
 			})
+			.find("a").css({"color": "silver"})
+			.end().find("a.on").css({"color": "red", "font-weight": "bold"})
+			.end().find("a.first, a.prev, a.next, a.end").css({"color": "black", "font-weight": "bold"})
 		;
 
 		$("#pager2")
 			.pagify({"current": 2, "total": 500, "pager": 5, "showCombo": false})
 			.on("click", "a", function(){
+				//sample process
 				alert($(this).attr("data-index"));
-			})
-			.on("change", "select", function(){
-				alert($(this).val());
 			})
 		;
 
 		$("#pager3")
 			.pagify({"current": 23, "total": 999, "isText": false})
 			.on("change", "input", function(){
-				$(this).attr("data-index", Number($(this).val()) - 1);
-
-				alert($(this).attr("data-index") + ", " + $(this).val());
+				//alert($(this).attr("data-index") + ", " + $(this).val());
+				//sample process
+				$("#pager3").pagify({"current": Number($(this).val()), "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
 			})
 			.on("click", "a", function(){
-				alert($(this).attr("data-index"));
+				//sample process
+				$("#pager3").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
 			})
 			.on("change", "select", function(){
-				alert($(this).val());
+				//sample process
+				$("#pager3").pagify({"current": 1, "total": 999, "isText": false, "list": $(this).val()});
 			})
 		;
 
 		$("#pager4")
-			.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showTotal": true})
+			.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showListed": true})
 			.on("click", "a", function(){
 				alert($(this).attr("data-index"));
 			})
@@ -66,7 +152,7 @@
 		;
 
 		$("#pager5")
-			.pagify({"current": 23, "total": 999, "isText": false, "showTotal": true, "showCombo": false})
+			.pagify({"current": 23, "total": 999, "isText": false, "showListed": true, "showCombo": false})
 			.on("change", "input", function(){
 				$(this).attr("data-index", Number($(this).val()) - 1);
 
@@ -74,9 +160,6 @@
 			})
 			.on("click", "a", function(){
 				alert($(this).attr("data-index"));
-			})
-			.on("change", "select", function(){
-				alert($(this).val());
 			})
 		;
 	</script>

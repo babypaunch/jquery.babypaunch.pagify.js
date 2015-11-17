@@ -2,8 +2,8 @@
 * jquery pager plugin
 * dev: 정대규(jeong dae gyu)
 * first: 2015.10.08
-* update: 2015.11.14
-* version: 0.6
+* update: 2015.11.18
+* version: 1.0
 * lisence: MIT(free)
 */
 
@@ -11,17 +11,24 @@ $.fn.pagify = function(setting){
 	"use strict";
 
     var config = {
-        current: 1 //현재 페이지 번호(text)
+        current: 1 //현재 페이지 번호, offset은 1부터
         , total: 0 //전체 건수
-        , pager: 10 //web에서는 보통 pager를 10개로 노출한다.
+        , pager: 10 //노출할 pager 갯수
 		, isText: true //pager의 스타일을 결정, true이면 숫자링크, false면 input으로 출력
-        , combo: [10, 20, 30, 50] //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
+        , combo: [10, 20, 30, 50] //listing group
         , list: 20 //한 화면에 listing될 갯수를 지정.
-        , showTotal: false //전체 건수를 보일지 여부.
-        , showCombo: true //콤보박스의 선택에 대한 부분은 추후 개발 예정임.
-		, showPrevNext: true //이전/다음 버튼을 보일지 여부.
-        , showFirstEnd: true //처음/끝 버튼을 보일지 여부.
+        , showListed: false //전체 건수 show/hide
+        , showCombo: true //콤보박스 show/hide
+		, showPrevNext: true //이전/다음 버튼 show/hide
+        , showFirstEnd: true //처음/끝 버튼 show/hide
 		, attr: "index" //set custom attr name
+		, classes: {
+			first: "first"
+			, prev: "prev"
+			, current: "on"
+			, next: "next"
+			, end: "end"
+		}
     }; //end: var config = {
 
 	var method = {
@@ -47,7 +54,7 @@ $.fn.pagify = function(setting){
         } //end: , end: function(max){
 
 		, result: function(){
-			var listed = Math.ceil(config.total / config.list); //리스트화된 전체 건수
+			var listed = Math.ceil(config.total / Number(config.list)); //리스트화된 전체 건수
 			var paged = Math.ceil(listed / config.pager); //pager 그룹의 건수
 			var json = {
 				listed: listed
@@ -95,47 +102,51 @@ $.fn.pagify = function(setting){
 	* 동적으로 그려진 객체가 되며, 클릭에 대한 이벤트는 플러그인 외부에서 처리하면 됨.
 	*/
 	var ui = {
-		total: function(total){
+		listed: function(total){
 			return "<span>" + total + "</span>";
 		}
 
 		, pager: function(config, dataset){
 			var str = "";
 			var listed = dataset.listed;
-			if(config.isText && config.showTotal){
-				str += this.total(config.total) + " ";
+
+			if(config.isText && config.showListed){
+				str += this.listed(listed) + " ";
 			}
 
 			for(var i in dataset){ //계산된 json 객체
 				var data = dataset[i];
 				var attr = config.attr;
+				var classes = config.classes;
 
 				if(i === "first"){
-					str += "<a href='#' data-" + attr + "='" + data[attr] + "'> ≪ </a>\n";
+					str += "<a href='#' data-" + attr + "='" + data[attr] + "' class='" + classes.first + "'> ≪ </a>\n";
 				}
 				if(i === "prev"){
-					str += "<a href='#' data-" + attr + "='" + data[attr] + "'> ＜ </a>\n";
+					str += "<a href='#' data-" + attr + "='" + data[attr] + "' class='" + classes.prev + "'> ＜ </a>\n";
 				}
 				if(i === "fromTo"){
 					for(var j = 0; j < data.length; j++){
 						var _data = data[j];
 						if(config.isText){
-							str += "<a href='#' data-" + attr + "='" + _data[attr] + "'> " + (_data.isCurrent ? "[" + _data.text + "]" : _data.text) + " </a>\n";
+							var _current = _data.isCurrent ? "[" + _data.text + "]" : _data.text;
+							var _currentClass = _data.isCurrent ? classes.current : "";
+							str += "<a href='#' data-" + attr + "='" + _data[attr] + "' class='" + _currentClass + "'> " + _current + " </a>\n";
 						}else{
 							if(_data.isCurrent){
 								str += "<input type='number' min='1' max='" + listed + "' data-" + attr + "='" + _data[attr] + "' value='" + _data.text + "'/>\n";
-								if(config.showTotal){
-									str += " / " + this.total(config.total);
+								if(config.showListed){
+									str += " / " + this.listed(listed);
 								}
 							}
 						}
 					}
 				}
 				if(i === "next"){
-					str += "<a href='#' data-" + attr + "='" + data[attr] + "'> ＞ </a>\n";
+					str += "<a href='#' data-" + attr + "='" + data[attr] + "' class='" + classes.next + "'> ＞ </a>\n";
 				}
 				if(i === "end"){
-					str += "<a href='#' data-" + attr + "='" + data[attr] + "'> ≫ </a>\n";
+					str += "<a href='#' data-" + attr + "='" + data[attr] + "' class='" + classes.end + "'> ≫ </a>\n";
 				}
 			} //end: for(var i in dataset){
 			return str;
@@ -146,7 +157,7 @@ $.fn.pagify = function(setting){
 			if(config.showCombo){ //select box의 처리
 				str += "<select>\n";
 				for(var i = 0, combo = config.combo; i < combo.length; i++){
-					str += "\t<option value='" + combo[i] + "'" + (config.list === combo[i] ? " selected='selected'" : "") + ">"
+					str += "\t<option value='" + combo[i] + "'" + (Number(config.list) === combo[i] ? " selected='selected'" : "") + ">"
 						+ combo[i]
 					+ "</option>\n";
 				}
@@ -160,9 +171,7 @@ $.fn.pagify = function(setting){
     * 플러그인의 실행부
     */
     $.extend(config, setting); //ui 부분을 위한 deep copy
-
 	var dataset = method.result();
-	//console.log(JSON.stringify(dataset));
 
     return this.each(function(){
         var html = ""; //최종적으로 그릴 객체들
