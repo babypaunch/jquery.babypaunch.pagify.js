@@ -129,9 +129,8 @@ $.fn.pagify = function(setting){
 					for(var j = 0; j < data.length; j++){
 						var _data = data[j];
 						if(config.isText){
-							var _current = _data.isCurrent ? "[" + _data.text + "]" : _data.text;
 							var _currentClass = _data.isCurrent ? classes.current : "";
-							str += "<a href='#' data-" + attr + "='" + _data[attr] + "' class='" + _currentClass + "'> " + _current + " </a>\n";
+							str += "<a href='#' data-" + attr + "='" + _data[attr] + "' class='" + _currentClass + "'> " + _data.text + " </a>\n";
 						}else{
 							if(_data.isCurrent){
 								str += "<input type='number' min='1' max='" + listed + "' data-" + attr + "='" + _data[attr] + "' value='" + _data.text + "'/>\n";

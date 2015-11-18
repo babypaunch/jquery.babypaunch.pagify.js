@@ -3,8 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<style>
-		a {text-decoration: none;}
 		div {border-bottom: 1px dotted silver; padding-bottom: 20px;}
+		a {text-decoration: none; color: silver;}
+		a.on {color: black; font-weight: bold; text-decoration: underline;}
+		a.first, a.prev, a.next, a.end {color: black; font-weight: bold;}
 	</style>
 </head>
 <body>
@@ -23,9 +25,6 @@ $("#pager1")
 		//sample process
 		$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
 	})
-	.find("a").css({"color": "silver"})
-	.end().find("a.on").css({"color": "red", "font-weight": "bold"})
-	.end().find("a.first, a.prev, a.next, a.end").css({"color": "black", "font-weight": "bold"})
 ;
 </pre>
 	<div id="pager1"></div>
@@ -99,7 +98,7 @@ $("#pager5")
 
 	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="jquery.babypaunch.pagify.min.js"></script>
+	<script src="jquery.babypaunch.pagify.js"></script>
 	<script>
 		$("#pager1")
 			.pagify({"current": 23, "total": 999})
@@ -111,9 +110,6 @@ $("#pager5")
 				//sample process
 				$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
 			})
-			.find("a").css({"color": "silver"})
-			.end().find("a.on").css({"color": "red", "font-weight": "bold"})
-			.end().find("a.first, a.prev, a.next, a.end").css({"color": "black", "font-weight": "bold"})
 		;
 
 		$("#pager2")
