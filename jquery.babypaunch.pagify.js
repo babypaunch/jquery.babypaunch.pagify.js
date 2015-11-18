@@ -2,8 +2,8 @@
 * jquery pager plugin
 * dev: 정대규(jeong dae gyu)
 * first: 2015.10.08
-* update: 2015.11.18
-* version: 1.0
+* update: 2015.11.19
+* version: 1.1
 * lisence: MIT(free)
 */
 
