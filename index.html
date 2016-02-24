@@ -2,162 +2,167 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <title>INDEX</title>
+
+	<link rel="stylesheet" href="http://cdn.jsdelivr.net/font-hack/2.019/css/hack.min.css">
+
 	<style>
-		div {border-bottom: 1px dotted silver; padding-bottom: 20px;}
+		* {padding: 0; margin: 0;}
+		html, body {width: 100%; height: 100%;}
+		pre *, code * {font-family: Hack; text-align: left;}
+
 		a {text-decoration: none; color: silver;}
-		a.on {color: black; font-weight: bold; text-decoration: underline;}
-		a.first, a.prev, a.next, a.end {color: black; font-weight: bold;}
+		span.on {color: black; font-weight: bold;}
 	</style>
 </head>
 <body>
-	<p>sample and codes are a pair.</p>
-
 <pre class="prettyprint">
+var config = {
+	current: 1 //현재 페이지 번호, offset은 1부터, 필수
+	, total: 0 //전체 건수, 필수
+	, pager: 10 //노출할 pager 갯수
+	, isText: true //pager의 스타일을 결정, true이면 숫자링크, false면 input으로 출력
+	, combo: [10, 20, 30, 50] //listing group
+	, list: 20 //한 화면에 listing될 갯수를 지정.
+	, showListed: true//전체 건수 show/hide
+	, showCombo: true //콤보박스 show/hide
+	, showPrevNext: true //이전/다음 버튼 show/hide
+	, showFirstEnd: true //처음/끝 버튼 show/hide
+	, attr: "index" //set custom attr name
+	, currentClass: "on" //현재 페이지에 해당하는 번호에 class를 추가
+	, html: { //pager로 보여질 dom 객체를 jquery 방식으로 주입
+		total: $("&#60;span&#62;")
+		, first: $("&#60;a&#62;", {"href": "#", "text": " ≪ "})
+		, prev: $("&#60;a&#62;", {"href": "#", "text": " ＜ "})
+		, num: $("&#60;a&#62;", {"href": "#"})
+		, next: $("&#60;a&#62;", {"href": "#", "text": " ＞ "})
+		, end: $("&#60;a&#62;", {"href": "#", "text": " ≫ "})
+	}
+}; //end: var config = {
+</pre>
+<p>
+	위의 코드는 pagify를 사용하기 위한 기본 설정값으로, 필수로 설정해야할 current와 total값을 제외하고는 모두 상황에 따라 추가해서 사용하면 된다.
+	config를 염두해두고 아래의 2가지 예제를 통해서 사용법을 알아보자.
+</p>
+
+<pre class="prettyprint more">
 ex1)
 
 $("#pager1")
-	.pagify({"current": 23, "total": 999})
-	.on("click", "a", function(){
-		//sample process
-		$("#pager1").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "list": $("#pager1 option:selected").val()});
+	.pagify({"current": 5 //현재 페이지의 번호를 항상 받아야 함.
+		, "total": 999 //전체 건수를 항상 받아야함.
+		, "combo": [20, 40, 60, 80, 100] //default가 아닌 다른 값으로 select box의 값을 지정했다.
+		, "list": 40 //한페이지 기본으로 보여줄 리스트 갯수를 변경했다.
+		, "html": {
+			//전체 건수를 출력하는 태그와 스타일(class 이용을 권장함)을 지정함함.
+			"total": $("<span>", {"style": "color: red;"}) 
+			//'처음'버튼의 태그와 몇몇 속성값 및 스타일(class 이용을 권장함)을 지정함.
+			, "first": $("<a>", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;" 
+				//'처음'버튼 내부 태그를 지정하고 스타일(class 이용을 권장함)을 지정함.
+				, "html": $("<span>", {"text": "first", "style": "background: silver; color: white; padding: 0 2px;"})
+			})
+			, "prev": $("<a>", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"
+				, "html": $("<span>", {"text": "prev", "style": "background: silver; color: white; padding: 0 2px;"})
+			})
+			//숫자 출력의 경우는 currentClass 값을 이용하여 text를 출력하게 강제화되어 있음.
+			//아래의 스타일은 숫자 출력시 일반적인 스타일을 적용하기 위해 입력한 예시임.
+			, "num": $("<a>", {"href": "#", "style": "margin: 0 5px;"})
+			, "next": $("<a>", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"
+				, "html": $("<span>", {"text": "next", "style": "background: silver; color: white; padding: 0 2px;"})
+			})
+			, "end": $("<a>", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"
+				, "html": $("<span>", {"text": "end", "style": "background: silver; color: white; padding: 0 2px;"})
+			})
+		}
 	})
-	.on("change", "select", function(){
-		//sample process
-		$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
+	.on("click", "a", function(e){ //pager 내의 모든 a태그를 클릭시 동작
+		e.preventDefault();
+		alert($(this).attr("data-index"));
+	})
+	.on("change", "select", function(e){ //pager 내의 select box를 변경시 동작
+		alert($(this).val());
 	})
 ;
 </pre>
 	<div id="pager1"></div>
 
-<pre class="prettyprint">
+<pre class="prettyprint more">
 ex2)
 
 $("#pager2")
-	.pagify({"current": 2, "total": 500, "pager": 5, "showCombo": false})
-	.on("click", "a", function(){
-		//sample process
+	.pagify({"current": 23
+		, "total": 999
+		, "isText": false //input box 형태의 pager를 사용하기 위해 설정
+		, "showCombo": false //select box를 숨김 처리함.
+	})
+	.on("change", "input", function(){ //pager 내의 input box의 값을 변경시 동작
+		$(this).attr("data-index", Number($(this).val()) - 1);
+		alert($(this).attr("data-index") + ", " + $(this).val());
+	})
+	.on("click", "a", function(e){ //pager 내의 모든 a태그를 클릭시 동작
+		e.preventDefault();
 		alert($(this).attr("data-index"));
 	})
 ;
 </pre>
 	<div id="pager2"></div>
 
-<pre class="prettyprint">
-ex3)
-
-$("#pager3")
-	.pagify({"current": 23, "total": 999, "isText": false})
-	.on("change", "input", function(){
-		//alert($(this).attr("data-index") + ", " + $(this).val());
-		//sample process
-		$("#pager3").pagify({"current": Number($(this).val()), "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
-	})
-	.on("click", "a", function(){
-		//sample process
-		$("#pager3").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
-	})
-	.on("change", "select", function(){
-		//sample process
-		$("#pager3").pagify({"current": 1, "total": 999, "isText": false, "list": $(this).val()});
-	})
-;
-</pre>
-	<div id="pager3"></div>
-
-<pre class="prettyprint">
-ex4)
-
-$("#pager4")
-	.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showListed": true})
-	.on("click", "a", function(){
-		alert($(this).attr("data-index"));
-	})
-	.on("change", "select", function(){
-		alert($(this).val());
-	})
-;
-</pre>
-	<div id="pager4"></div>
-
-<pre class="prettyprint">
-ex5)
-
-$("#pager5")
-	.pagify({"current": 23, "total": 999, "isText": false, "showListed": true, "showCombo": false})
-	.on("change", "input", function(){
-		$(this).attr("data-index", Number($(this).val()) - 1);
-
-		alert($(this).attr("data-index") + ", " + $(this).val());
-	})
-	.on("click", "a", function(){
-		alert($(this).attr("data-index"));
-	})
-;
-</pre>
-	<div id="pager5"></div>
-
 	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="jquery.babypaunch.pagify.js"></script>
 	<script>
 		$("#pager1")
-			.pagify({"current": 23, "total": 999})
-			.on("click", "a", function(){
-				//sample process
-				$("#pager1").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "list": $("#pager1 option:selected").val()});
+			.pagify({"current": 5
+				, "total": 999
+				, "combo": [20, 40, 60, 80, 100]
+				, "list": 40
+				, "html": {
+					"total": $("<span>", {"style": "color: red;"})
+					, "first": $("<a>", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;"
+						, "html": $("<span>", {"text": "first", "style": "background: silver; color: white; padding: 0 2px;"})
+					})
+					, "prev": $("<a>", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"
+						, "html": $("<span>", {"text": "prev", "style": "background: silver; color: white; padding: 0 2px;"})
+					})
+					, "num": $("<a>", {"href": "#", "style": "margin: 0 5px;"})
+					, "next": $("<a>", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"
+						, "html": $("<span>", {"text": "next", "style": "background: silver; color: white; padding: 0 2px;"})
+					})
+					, "end": $("<a>", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"
+						, "html": $("<span>", {"text": "end", "style": "background: silver; color: white; padding: 0 2px;"})
+					})
+				}
 			})
-			.on("change", "select", function(){
-				//sample process
-				$("#pager1").pagify({"current": 1, "total": 999, "list": $(this).val()});
-			})
-		;
-
-		$("#pager2")
-			.pagify({"current": 2, "total": 500, "pager": 5, "showCombo": false})
-			.on("click", "a", function(){
-				//sample process
-				alert($(this).attr("data-index"));
-			})
-		;
-
-		$("#pager3")
-			.pagify({"current": 23, "total": 999, "isText": false})
-			.on("change", "input", function(){
-				//alert($(this).attr("data-index") + ", " + $(this).val());
-				//sample process
-				$("#pager3").pagify({"current": Number($(this).val()), "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
-			})
-			.on("click", "a", function(){
-				//sample process
-				$("#pager3").pagify({"current": Number($(this).attr("data-index")) + 1, "total": 999, "isText": false, "list": $("#pager3 option:selected").val()});
-			})
-			.on("change", "select", function(){
-				//sample process
-				$("#pager3").pagify({"current": 1, "total": 999, "isText": false, "list": $(this).val()});
-			})
-		;
-
-		$("#pager4")
-			.pagify({"current": 5, "total": 999, "combo": [20, 40, 60, 80], "list": 80, "showListed": true})
-			.on("click", "a", function(){
+			.on("click", "a", function(e){
+				e.preventDefault();
 				alert($(this).attr("data-index"));
 			})
 			.on("change", "select", function(){
 				alert($(this).val());
 			})
-		;
+		; //end: $("#pager1")
 
-		$("#pager5")
-			.pagify({"current": 23, "total": 999, "isText": false, "showListed": true, "showCombo": false})
+		$("#pager2")
+			.pagify({"current": 23
+				, "total": 999
+				, "isText": false
+				, "showCombo": false
+			})
 			.on("change", "input", function(){
 				$(this).attr("data-index", Number($(this).val()) - 1);
-
 				alert($(this).attr("data-index") + ", " + $(this).val());
 			})
-			.on("click", "a", function(){
+			.on("click", "a", function(e){
+				e.preventDefault();
 				alert($(this).attr("data-index"));
 			})
-		;
+		; //end: $("#pager2")
 	</script>
+	<style>
+		pre.prettyprint {white-space: pre-wrap; padding: 0.5em; margin: 0; width: calc(100% - 1em); border-radius: 0px;}
+		pre.more {margin-top: 50px;}
+	</style>
 </body>
 </html>
