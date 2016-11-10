@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <title>PAGIFY</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style>
+		@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+		* {
+			font-family: 'Nanum Gothic', sans-serif;
+			padding: 0;
+			margin: 0;
+		}
+		
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.layer {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			display: table;
+			position: absolute;
+		}
+		
+		.cell {
+			display: table-cell;
+			vertical-align: middle;
+			width: 0;
+			height: 100%;
+			padding: 10px;
+			margin: 0 auto;
+		}
+		
+		code {display: block; border-radius: 0;}
+		.tab1x:before {content: "\00a0\00a0\00a0\00a0";}
+		.tab2x:before {content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";}
+		.tab3x:before {content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";}
+		.tab4x:before {content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";}
+		.tab5x:before {content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";}
+	</style>
+</head>
+<body>
+	<div class="layer">
+		<div class="cell">
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 1. - 기본 사용, 전체 111건, 현재 1페이지
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager1")</code>
+<code class="tab1x">.pagify({"total": 111</code>
+<code class="tab2x">, "current": 1</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager1"></div>
+					</div>
+				</div>
+			</div><!-- /1:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 2. - 전체 2222건, 현재 2페이지, select box 수정, list 기본 40개 보기, 전체 999건, 현재 2페이지
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager2")</code>
+<code class="tab1x">.pagify({"total": 2222</code>
+<code class="tab2x">, "current": 2</code>
+<code class="tab2x">, "combo": [20, 40, 60, 80, 100]</code>
+<code class="tab2x">, "list": 40</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager2"></div>
+					</div>
+				</div>
+			</div><!-- /2:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 3. - 전체 3333건, 현재 3페이지, select box 수정, list 기본 60개 보기, pager 5개 보기, listing된 전체 건수 숨김, 전체 999건, 현재 3페이지
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager3")</code>
+<code class="tab1x">.pagify({"total": 3333</code>
+<code class="tab2x">, "current": 3</code>
+<code class="tab2x">, "combo": [20, 40, 60, 80, 100]</code>
+<code class="tab2x">, "list": 60</code>
+<code class="tab2x">, "pager": 5</code>
+<code class="tab2x">, "showListed": false</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager3"></div>
+					</div>
+				</div>
+			</div><!-- /3:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 4. - 전체 4444건, 현재 4페이지, select box 숨김, data- attribute 변경
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager4")</code>
+<code class="tab1x">.pagify({"total": 4444</code>
+<code class="tab2x">, "current": 4</code>
+<code class="tab2x">, "showCombo": false</code>
+<code class="tab2x">, "attr": "index"</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager4"></div>
+					</div>
+				</div>
+			</div><!-- /4:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 5. - 전체 5555건, 현재 5페이지, select box 수정, list 기본 100개 보기, pager style customizing
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager5")</code>
+<code class="tab1x">.pagify({"total": 5555</code>
+<code class="tab2x">, "current": 5</code>
+<code class="tab2x">, "combo": [20, 40, 60, 80, 100]</code>
+<code class="tab2x">, "list": 100</code>
+<code class="tab2x">, "html": {</code>
+<code class="tab3x">"total": $("&lt;span&gt;", {"style": "color: red;"})</code>
+<code class="tab3x">, "first": $("&lt;a&gt;", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "first", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "prev": $("&lt;a&gt;", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "prev", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "num": $("&lt;a&gt;", {"href": "#", "style": "margin: 0 5px; font-weight: bold;"})</code>
+<code class="tab3x">, "next": $("&lt;a&gt;", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "next", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "end": $("&lt;a&gt;", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "end", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab2x">}</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager5"></div>
+					</div>
+				</div>
+			</div><!-- /5:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 6. - 기본 사용, 전체 6666건, 현재 6페이지, textStyle 아님
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager6")</code>
+<code class="tab1x">.pagify({"total": 6666</code>
+<code class="tab2x">, "current": 6</code>
+<code class="tab2x">, "textStyle": false</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager6"></div>
+					</div>
+				</div>
+			</div><!-- /6:div.container -->
+
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Example 7. - 전체 7777건, 현재 7페이지, textStyle 아님, select box 수정, list 기본 100개 보기, pager style customizing
+					</div>
+					<div class="panel-body">
+						<div>
+<code>$("#pager7")</code>
+<code class="tab1x">.pagify({"total": 7777</code>
+<code class="tab2x">, "current": 7</code>
+<code class="tab2x">, "textStyle": false</code>
+<code class="tab2x">, "combo": [20, 40, 60, 80, 100]</code>
+<code class="tab2x">, "list": 100</code>
+<code class="tab2x">, "html": {</code>
+<code class="tab3x">"total": $("&lt;span&gt;", {"style": "color: red;"})</code>
+<code class="tab3x">, "first": $("&lt;a&gt;", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "first", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "prev": $("&lt;a&gt;", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "prev", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "next": $("&lt;a&gt;", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "next", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab3x">, "end": $("&lt;a&gt;", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"</code>
+<code class="tab4x">, "html": $("&lt;span&gt;", {"text": "end", "style": "background: silver; color: white; padding: 5px;"})</code>
+<code class="tab3x">})</code>
+<code class="tab2x">}</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("click", "a", function(e){</code>
+<code class="tab2x">e.preventDefault();</code>
+<code class="tab2x">alert($(this).attr("data-pager-index"));</code>
+<code class="tab1x">})</code>
+<code class="tab1x">.on("change", "select", function(){</code>
+<code class="tab2x">alert($(this).val());</code>
+<code class="tab1x">});</code>
+						</div>
+						<div id="pager7"></div>
+					</div>
+				</div>
+			</div><!-- /7:div.container -->
+
+		</div><!-- div.cell -->
+	</div><!-- div.layer -->
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.js"></script>
+	<script src="./jquery.babypaunch.pagify.js"></script>
+	<script>
+		$(function(){
+			$("#pager1")
+				.pagify({"total": 111
+					, "current": 1
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager1")
+
+			$("#pager2")
+				.pagify({"total": 2222
+					, "current": 2
+					, "combo": [20, 40, 60, 80, 100]
+					, "list": 40
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager2")
+
+			$("#pager3")
+				.pagify({"total": 3333
+					, "current": 3
+					, "combo": [20, 40, 60, 80, 100]
+					, "list": 60
+					, "pager": 5
+					, "showListed": false
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager3")
+
+			$("#pager4")
+				.pagify({"total": 4444
+					, "current": 4
+					, "showCombo": false
+					, "attr": "index"
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager4")
+
+			$("#pager5")
+				.pagify({"total": 5555 
+					, "current": 5
+					, "combo": [20, 40, 60, 80, 100]
+					, "list": 100
+					, "html": {
+						"total": $("<span>", {"style": "color: red;"})
+						, "first": $("<a>", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "first", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "prev": $("<a>", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "prev", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "num": $("<a>", {"href": "#", "style": "margin: 0 5px; font-weight: bold;"})
+						, "next": $("<a>", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "next", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "end": $("<a>", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "end", "style": "background: silver; color: white; padding: 5px;"})
+						})
+					}
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager5")
+
+			$("#pager6")
+				.pagify({"total": 6666
+					, "current": 6
+					, "textStyle": false
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager6")
+
+			$("#pager7")
+				.pagify({"total": 7777
+					, "current": 7
+					, "textStyle": false
+					, "combo": [20, 40, 60, 80, 100]
+					, "list": 100
+					, "html": {
+						"total": $("<span>", {"style": "color: red;"})
+						, "first": $("<a>", {"id": "pager-first", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "first", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "prev": $("<a>", {"id": "pager-prev", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "prev", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "next": $("<a>", {"id": "pager-next", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "next", "style": "background: silver; color: white; padding: 5px;"})
+						})
+						, "end": $("<a>", {"id": "pager-end", "href": "#", "style": "margin: 0 3px;"
+							, "html": $("<span>", {"text": "end", "style": "background: silver; color: white; padding: 5px;"})
+						})
+					}
+				})
+				.on("click", "a", function(e){
+					e.preventDefault();
+					alert($(this).attr("data-pager-index"));
+				})
+				.on("change", "select", function(){
+					alert($(this).val());
+				})
+			; //end: $("#pager7")
+		}); //end: $(function(){
+	</script>
+</body>
+</html>

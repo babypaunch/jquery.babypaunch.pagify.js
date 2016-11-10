@@ -2,8 +2,8 @@
 * jquery pager plugin
 * dev: 정대규(jeong dae gyu)
 * first: 2015.10.08
-* update: 2016.02.24
-* version: 2.0
+* update: 2016.11.10
+* version: 2.1
 * lisence: MIT(free)
 */
 
@@ -11,26 +11,33 @@ $.fn.pagify = function(setting){
 	"use strict";
 
     var config = {
-        current: 1 //현재 페이지 번호, offset은 1부터
-        , total: 0 //전체 건수
+        total: 0 //전체 건수
+        , current: 1 //현재 페이지 번호, offset은 1부터
         , pager: 10 //노출할 pager 갯수
-		, isText: true //pager의 스타일을 결정, true이면 숫자링크, false면 input으로 출력
+		, textStyle: true //pager의 스타일을 결정, true이면 숫자링크, false면 input으로 출력
         , combo: [10, 20, 30, 50] //listing group
         , list: 20 //한 화면에 listing될 갯수를 지정.
         , showListed: true//전체 건수 show/hide
         , showCombo: true //콤보박스 show/hide
 		, showPrevNext: true //이전/다음 버튼 show/hide
         , showFirstEnd: true //처음/끝 버튼 show/hide
-		, attr: "index" //set custom attr name
+		, attr: "pager-index" //set custom attr name
 		, currentClass: "on" //현재 페이지에 해당하는 번호에 class를 추가
+		/*
+		* 제일 중요한 부분중 하나로 pager의 tag와 style을 지정한다.
+		* 사용자가 jquery 방식으로 dom을 대입할 수 있다.
+		*/
 		, html: {
 			total: $("<span>")
-			, first: $("<a>", {"href": "#", "text": " ≪ "})
-			, prev: $("<a>", {"href": "#", "text": " ＜ "})
-			, num: $("<a>", {"href": "#"})
-			, next: $("<a>", {"href": "#", "text": " ＞ "})
-			, end: $("<a>", {"href": "#", "text": " ≫ "})
-		} //빈 요소에 사용자가 jquery 방식으로 dom을 대입
+			, first: $("<a>", {"href": "#", "text": " ≪ ", "style": "font-size: 1.4rem; font-weight: bold; color: gray;"})
+			, prev: $("<a>", {"href": "#", "text": " ＜ ", "style": "font-size: 1.4rem; font-weight: bold; color: gray;"})
+			, num: $("<a>", {"href": "#", "style": "padding: 5px;"})
+			, next: $("<a>", {"href": "#", "text": " ＞ ", "style": "font-size: 1.4rem; font-weight: bold; color: gray;"})
+			, end: $("<a>", {"href": "#", "text": " ≫ ", "style": "font-size: 1.4rem; font-weight: bold; color: gray;"})
+		}
+		, currentStyle: "font-weight: bold;"
+		, inputStyle: "padding: 0 0 0 5px;" //textStyle이 false일때 input창의 style을 지정
+		, selectStyle: "padding: 3px;" //select box의 style을 지정
     }; //end: var config = {
 
 	var method = {
@@ -122,14 +129,14 @@ $.fn.pagify = function(setting){
 
 		, pager: function(dataset){
 			var result = [];
-			if(dataset.isText){
+			if(dataset.textStyle){
 				for(var i = 0, fromTo = dataset.fromTo; i < fromTo.length; i++){
 					var $html = undefined;
+					var style = dataset.html.num[0].style.cssText;
 					if(fromTo[i].isCurrent){
-						var style = dataset.html.num[0].style.cssText;
 						var $children = dataset.html.num[0].children[0];
 						var child = $children === undefined ? "<span>" : $children;
-						$html = $(child).text(fromTo[i].text).attr({"style": style}).addClass(dataset.currentClass);
+						$html = $(child).text(fromTo[i].text).attr({"style": style + dataset.currentStyle}).addClass(dataset.currentClass);
 					}else{
 						$html = dataset.html.num.clone();
 						$html[0].setAttribute("data-" + dataset.attr, fromTo[i][dataset.attr]);
@@ -138,7 +145,8 @@ $.fn.pagify = function(setting){
 					result.push($html);
 				}
 			}else{
-				var $html = $("<input>", {"type": "number", "min": 1, "max": dataset.listed});
+				console.log(dataset);
+				var $html = $("<input>", {"type": "number", "min": 1, "max": dataset.listed, "style": dataset.inputStyle});
 				for(var i = 0, fromTo = dataset.fromTo; i < fromTo.length; i++){
 					if(fromTo[i].isCurrent){
 						$html[0].setAttribute("data-" + dataset.attr, fromTo[i][dataset.attr]); //data.isCurrent.index
@@ -154,7 +162,7 @@ $.fn.pagify = function(setting){
 		, select: function(config){
 			var str = "";
 			if(config.showCombo){ //select box의 처리
-				str += "<select>\n";
+				str += "<select style='" + config.selectStyle + "'>\n";
 				for(var i = 0, combo = config.combo; i < combo.length; i++){
 					str += "\t<option value='" + combo[i] + "'" + (Number(config.list) === combo[i] ? " selected='selected'" : "") + ">"
 						+ combo[i]
@@ -172,7 +180,8 @@ $.fn.pagify = function(setting){
 	var dataset = method.calculated(config, setting);
 
     return this.each(function(){
-        $(this).append(ui.listed(dataset))
+        $(this).css({"padding": "10px"})
+			.append(ui.listed(dataset))
 			.append(ui.nav("first", dataset)).append(ui.nav("prev", dataset))
 			.append(ui.pager(dataset))
 			.append(ui.nav("next", dataset)).append(ui.nav("end", dataset))
