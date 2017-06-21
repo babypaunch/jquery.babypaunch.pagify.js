@@ -2,8 +2,7 @@
 * jquery pager plugin
 * dev: 정대규(jeong dae gyu)
 * first: 2015.10.08
-* update: 2016.11.10
-* version: 2.1
+* update: 2017.06.22
 * lisence: MIT(free)
 */
 
@@ -42,11 +41,22 @@ $.fn.pagify = function(setting){
 
 	var method = {
         first: function(min){ //'처음' 버튼
-            return {[config.attr] : min - 1, "text": min};
+        	var json = {};
+        	json[config.attr] = min - 1;
+        	json.text = min;
+        	return json;
         } //end: , first: function(min){
         , prev: function(num, min){ //'이전' 버튼
             var _prev = (num - 1) * config.pager - config.pager + 1;
-            return _prev < min ? {[config.attr]: min - 1, "text": min} : {[config.attr]: _prev - 1, "text": _prev};
+            var json = {};
+            if(_prev < min){
+            	json[config.attr] = min - 1;
+            	json.text = min;
+            }else{
+            	json[config.attr] = _prev - 1;
+            	json.text = _prev;
+            }
+            return json;
         } //end: , prev: function(num, min){
         , from: function(num){ //'pager 시작' 번호
             return num === 1 ? 1 : num * config.pager - config.pager + 1;
@@ -56,10 +66,21 @@ $.fn.pagify = function(setting){
         } //end: , to: function(num){
         , next: function(num, max){ //'다음' 버튼
             var _next = num * config.pager + 1;
-            return _next > max ? {[config.attr]: max - 1, "text": max} : {[config.attr]: _next - 1, "text": _next};
+            var json = {};
+            if(_next > max){
+            	json[config.attr] = max - 1;
+            	json.text = max;
+            }else{
+            	json[config.attr] = _next - 1;
+            	json.text = _next;
+            }
+            return json;
         } //end: , next: function(num, max){
         , end: function(max){ //'끝' 버튼
-            return {[config.attr]: max - 1, "text": max};
+        	var json = {};
+        	json[config.attr] = max - 1;
+        	json.text = max;
+        	return json;
         } //end: , end: function(max){
 
 		, calculated: function(config, setting){
@@ -82,7 +103,11 @@ $.fn.pagify = function(setting){
 						if(j === config.current){
 							inPaged = true;
 						}
-						fromTo.push({[config.attr]: num, "text": j, "isCurrent": j === config.current});
+						var json = {};
+						json[config.attr] = num;
+						json.text = j;
+						json.isCurrent = j === config.current;
+						fromTo.push(json);
 					}
 				} //end: for(var j = this.from(i), num = j - 1; j <= this.to(i); j++, num++){ 
 				
