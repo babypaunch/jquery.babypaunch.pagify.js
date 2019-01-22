@@ -402,6 +402,9 @@
 					e.preventDefault();
 					alert($(this).attr("data-pager-index"));
 				})
+				.on("change", "input", function(){
+					console.log($(this).val());
+				})
 				.on("change", "select", function(){
 					alert($(this).val());
 				})
